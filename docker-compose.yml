@@ -14,7 +14,8 @@ services:
     depends_on: 
       - app
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.11
 
   nc-web02:
     image: nginx
@@ -28,7 +29,8 @@ services:
     depends_on: 
       - app
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.12
 
 
   nc-web03:
@@ -43,7 +45,8 @@ services:
     depends_on: 
       - app
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.13
 
 
   nc-web04:
@@ -59,7 +62,8 @@ services:
     depends_on: 
       - app
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.14
     
   nc-proxy01:
     image: haproxy:2.3
@@ -74,7 +78,6 @@ services:
 
   
 
-
   redis01:
     image: redis:alpine
     restart: always
@@ -84,8 +87,13 @@ services:
     links:
       - nc-sqlbroker
     volumes:
-      - ./nextcloud:/var/www/html
+      - ./nextcloud/data:/var/www/html/data
     restart: always
+    environment:
+      - MYSQL_HOST=nc-sqlbroker
+      - REDIS_HOST=redis
+    env_file:
+      - db.env
     networks:
       nextcloud: {}
   
@@ -102,33 +110,25 @@ services:
     image: mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: always
-    environment: 
-      - MYSQL_ROOT_PASSWORD=test123
-      - MYSQL_PASSWORD=nextcloud
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
     env_file:
       - db.env
     volumes:
         - './db01-data:/var/lib/mysql'
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.100
   
   nc-db02:
     image: mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: always
-    environment: 
-      - MYSQL_ROOT_PASSWORD=test123
-      - MYSQL_PASSWORD=nextcloud
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
     env_file:
       - db.env
     volumes:
       - './db02-data:/var/lib/mysql'
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.101
 
 networks:
   nextcloud:
