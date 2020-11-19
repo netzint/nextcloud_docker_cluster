@@ -83,12 +83,13 @@ services:
     image: redis:alpine
     restart: always
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.5
 
   app:
     image: nextcloud:fpm
-    links:
-      - nc-sqlbroker
+    #links:
+    #  - nc-sqlbroker
     volumes:
       - ./nextcloud/data:/var/www/html/data
     restart: always
@@ -99,7 +100,8 @@ services:
     env_file:
       - db.env
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.6
   
 
   nc-sqlbroker:
@@ -107,7 +109,8 @@ services:
     volumes:
       - './nc-sqlbroker/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.7
   
 
   nc-db01:
