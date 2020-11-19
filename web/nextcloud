@@ -63,9 +63,9 @@ server {
         fastcgi_pass php-handler;
         fastcgi_intercept_errors on;
         fastcgi_request_buffering off;
-        fastcgi_read_timeout 600;
-        fastcgi_send_timeout 600;
-        fastcgi_connect_timeout 600;
+        fastcgi_read_timeout 1200;
+        fastcgi_send_timeout 1200;
+        fastcgi_connect_timeout 1200;
         fastcgi_param PHP_VALUE "open_basedir=/var/www:/tmp/:/srv/nextcloud-data:/dev/urandom:/proc/meminfo:/srv/nextcloud-log/:/srv/nextcloud-apps/
              upload_max_filesize = 10G
              post_max_size = 10G

@@ -74,13 +74,16 @@ services:
       - './nc-proxy/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
       - './nc-proxy/webserver:/etc/ssl/webserver'
     networks:
-      nextcloud: {}
+      nextcloud:
+        ipv4_address: 172.24.0.4
 
   
 
   redis01:
     image: redis:alpine
     restart: always
+    networks:
+      nextcloud: {}
 
   app:
     image: nextcloud:fpm
@@ -91,7 +94,8 @@ services:
     restart: always
     environment:
       - MYSQL_HOST=nc-sqlbroker
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis01
+      - TRUSTED_PROXIES=174.24.0.4
     env_file:
       - db.env
     networks:
@@ -101,7 +105,7 @@ services:
   nc-sqlbroker:
     image: haproxy:2.3
     volumes:
-      - './nc-sqlbroker/haproxy/:/usr/local/etc/haproxy'
+      - './nc-sqlbroker/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
     networks:
       nextcloud: {}
   
