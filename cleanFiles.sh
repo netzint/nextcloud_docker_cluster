@@ -2,13 +2,29 @@
 rm -Rf -v ./db01-data/*
 rm -Rf -v ./db02-data/*
 rm -Rf -v ./nextcloud/data/*
+rm -Rf -v ./nextcloud/config/*
+rm -Rf -v ./nextcloud/custom_apps/*
 
-docker rm ni-nextcloud_nc-web04_1
-docker rm ni-nextcloud_nc-web01_1
-docker rm ni-nextcloud_nc-web02_1
-docker rm ni-nextcloud_app_1
-docker rm ni-nextcloud_nc-proxy01_1
-docker rm ni-nextcloud_nc-db01_1
-docker rm ni-nextcloud_redis01_1
-docker rm ni-nextcloud_nc-db02_1
-docker rm ni-nextcloud_nc-sqlbroker_1
+
+docker rm nextcloud_docker_cluster_nc-proxy01_1
+docker rm nextcloud_docker_cluster_nc-web01_1
+docker rm nextcloud_docker_cluster_nc-web02_1
+docker rm nextcloud_docker_cluster_nc-web03_1
+docker rm nextcloud_docker_cluster_nc-web04_1
+
+docker rm nextcloud_docker_cluster_app_1
+docker rm nextcloud_docker_cluster_app01_1
+docker rm nextcloud_docker_cluster_app02_1
+docker rm nextcloud_docker_cluster_app03_1
+docker rm nextcloud_docker_cluster_app04_1
+
+docker rm nextcloud_docker_cluster_fpm1
+docker rm nextcloud_docker_cluster_fpm01_1
+docker rm nextcloud_docker_cluster_fpm02_1
+docker rm nextcloud_docker_cluster_fpm03_1
+docker rm nextcloud_docker_cluster_fpm04_1
+
+docker rm nextcloud_docker_cluster_nc-sqlbroker_1
+docker rm nextcloud_docker_cluster_nc-db01_1
+docker rm nextcloud_docker_cluster_nc-db02_1
+docker rm nextcloud_docker_cluster_redis01_1

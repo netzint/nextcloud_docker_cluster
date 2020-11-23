@@ -8,25 +8,45 @@ Changelog
   # 2020.11.06
     - Initial
 
+
+Static Content
+===============
+
+ni-nextcloud-fpm is build by us and contains the neccessary addons we need for ldap and samba access.
+
 Environment Variables
 =====================
 
-- `DEFAULT_PAPERSIZE` - LDAP server hostname(s) (default: "ldap1.example.com ldap2.example.com")
-- `AUTH_LDAP_SERVER` - LDAP ip address eg. 10.0.0.1
-- `AUTH_LDAP_PORT` - LDAP server port (default: "389")
-- `AUTH_LDAP_ADMIN` - LDAP server user (default: "cn=admin,dc=example,dc=com")
-- `AUTH_LDAP_PASSWORD` - LDAP server password (default: "password")
-- `AUTH_LDAP_BASEDN` - LDAP server Base DN (default: "dc=example,dc=com")
-- `AUTH_METHOD` - none, unix, ldap
-- `AUTH_LDAP_SCHEMA_TYPE` - ACTIVE_DIRECTORY or NOVELL_EDIRECTORY
-
-- 
 
 
+Environment Variables can be set in db.env. These contain the neccessary Data for database connections
+
+- `MYSQL_ROOT_PASSWORD=test123`
+- `MYSQL_PASSWORD=Muster`
+- `MYSQL_DATABASE=nextcloud`
+- `MYSQL_USER=nextcloud`
+- `MYSQL_HOST=nc-sqlbroker`
+- `REDIS_HOST=redis01`
+- `REDIS_HOST_PASSWORD=redis2020passwordImportant`
+- `TRUSTED_PROXIES=174.24.0.4`
 
 
-Example Docker Compose Configuration
-====================================
+
+How it works
+============
+
+First run the init.sh. This file creates the first mariadb container and adds the neccessary nextcloud database structure.
+
+Afterwards run docker-compose up and wait until the databases are in sync.
+
+Once this happens stop the process by hitting ctrl + c
+
+Now open db01-data/grastate.dat and set the bootstrap value from 0 to 1.
+
+Now run startCluster.sh, wait a few seconds and run postinst.sh.
+
+Postinst.sh adds the last missing database indicies and configures nextcloud to use cron instead of ajax.
+
+Now log in via webinterface and create the administrator account.
 
 
-# nextcloud_docker_cluster
