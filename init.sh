@@ -26,7 +26,7 @@ docker run --rm --network nextcloud --ip 172.24.0.100 --name nextcloud_docker_cl
           --wsrep-new-cluster
 
 echo "waiting for cluster to initiate"
-sleep 6
+sleep 8
 
 mysql -h localhost -p$MYSQL_ROOT_PASSWORD --protocol=TCP -e "show databases" > /dev/null
 
@@ -76,4 +76,9 @@ sed -i 's/safe_to_bootstrap: 0/safe_to_bootstrap: 1/' ./db01-data/grastate.dat
 
 echo "copy default config"
 cp -R templates/config nextcloud/
+chown -R www-data nextcloud/config
+touch nextcloud/config/CAN_INSTALL
+
+echo "starting container, when this is accessible run postInst.sh"
+./startDocker.sh
 
