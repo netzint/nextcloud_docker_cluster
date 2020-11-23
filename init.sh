@@ -49,7 +49,7 @@ fi
 
 #docker stop nextcloud_docker_cluster_nc-db02_1
 echo "start second sql instance"
-docker run --rm --network nextcloud --ip 172.24.0.101 --name nextcloud_docker_cluster_nc-db02_1 -d -it -v /srv/docker/nextcloud_docker_cluster/db02-data:/var/lib/mysql --env-file db.env mariadb \
+docker run --rm --network nextcloud --ip 172.24.0.101 --name nextcloud_docker_cluster_nc-db02_1 -it -v /srv/docker/nextcloud_docker_cluster/db02-data:/var/lib/mysql --env-file db.env mariadb \
           --transaction-isolation=READ-COMMITTED \
           --binlog-format=ROW \
           --innodb-large-prefix=true \
@@ -63,9 +63,17 @@ docker run --rm --network nextcloud --ip 172.24.0.101 --name nextcloud_docker_cl
           --innodb-force-primary-key=1 \
           --innodb-doublewrite=1 \
           --wsrep-cluster-name=NextcloudCluster \
-          --wsrep-node-name=nc-db01 \
+          --wsrep-node-name=nc-db02 \
           --wsrep-node-address="172.24.0.101" \
           --innodb-flush-log-at-trx-commit=0
-sleep 5
+
 echo "stop container"
+sleep 10
 docker stop nextcloud_docker_cluster_nc-db01_1
+
+echo "set safe_to_bootstrap for db01"
+sed -i 's/safe_to_bootstrap: 0/safe_to_bootstrap: 1/' ./db01-data/grastate.dat
+
+echo "copy default config"
+cp -R templates/config nextcloud/
+
