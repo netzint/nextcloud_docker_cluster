@@ -21,6 +21,7 @@ Environment Variables
 
 Environment Variables can be set in db.env. These contain the neccessary Data for database connections
 
+
 - `MYSQL_ROOT_PASSWORD=test123`
 - `MYSQL_PASSWORD=Muster`
 - `MYSQL_DATABASE=nextcloud`
@@ -29,24 +30,22 @@ Environment Variables can be set in db.env. These contain the neccessary Data fo
 - `REDIS_HOST=redis01`
 - `REDIS_HOST_PASSWORD=redis2020passwordImportant`
 - `TRUSTED_PROXIES=174.24.0.4`
-
-
+- `NEXTCLOUD_ADMIN=admin`
+- `NEXTCLOUD_ADMIN_PASSWORD=Muster!`
+- `INTERNAL_IP=10.10.1.134`
+- `INTERNAL_DOMAINNAME=nextcloud.netzint.de`
 
 How it works
 ============
 
-First run the init.sh. This file creates the first mariadb container and adds the neccessary nextcloud database structure.
+First run the init.sh. This file creates the first mariadb container and adds the neccessary nextcloud database structure. Afterwards
+it spawns the second db and configures the grafana mariadb features and enables the safe_to_bootstrap value for db01, copys the default
+configs from the template directory and hints to enable the systemd service.
 
-Afterwards run docker-compose up and wait until the databases are in sync.
+You can then run the cluster via systemd or the daemonHandler.sh script (start / stop)
 
-Once this happens stop the process by hitting ctrl + c
+Once the Nextcloud is up and running run the postInst.sh do run the Nextcloud setup process (generate admin, enable apps etc.)
 
-Now open db01-data/grastate.dat and set the bootstrap value from 0 to 1.
-
-Now run startCluster.sh, wait a few seconds and run postinst.sh.
-
-Postinst.sh adds the last missing database indicies and configures nextcloud to use cron instead of ajax.
-
-Now log in via webinterface and create the administrator account.
+.
 
 

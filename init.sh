@@ -4,8 +4,6 @@ source db.env
 
 docker network create --gateway 172.24.0.1 --subnet 172.24.0.0/24 nextcloud
 
-
-
 docker run --rm --network nextcloud --ip 172.24.0.100 --name nextcloud_docker_cluster_nc-db01_1 -d -it -p 3306:3306 -v /srv/docker/nextcloud_docker_cluster/db01-data:/var/lib/mysql --env-file db.env mariadb \
           --transaction-isolation=READ-COMMITTED \
           --binlog-format=ROW \
@@ -36,9 +34,6 @@ mysql -h localhost -p$MYSQL_ROOT_PASSWORD --protocol=TCP -e "show databases" > /
 done
 
 echo "importing tables"
-#read test2
-#echo $test2
-#exit
 
 mysql -h localhost -p$MYSQL_ROOT_PASSWORD --protocol=TCP nextcloud < templates/nextcloud.db
 if [ $? == 0 ];then
@@ -47,7 +42,6 @@ else
 	echo "import failed"
 fi
 
-#docker stop nextcloud_docker_cluster_nc-db02_1
 echo "start second sql instance"
 docker run --rm --network nextcloud --ip 172.24.0.101 --name nextcloud_docker_cluster_nc-db02_1 -it -v /srv/docker/nextcloud_docker_cluster/db02-data:/var/lib/mysql --env-file db.env mariadb \
           --transaction-isolation=READ-COMMITTED \
@@ -79,6 +73,10 @@ cp -R templates/config nextcloud/
 chown -R www-data nextcloud/config
 touch nextcloud/config/CAN_INSTALL
 
-echo "starting container, when this is accessible run postInst.sh"
-./startDocker.sh
+echo "You should now run"
+echo "cp templates/systemd/nccluster.service /etc/systemd/systemd/"
+echo "systemctl enable nccluster"
+echo "systemctl start nccluster"
+echo ""
+echo "When the webservice is available via https run the postinst script."
 

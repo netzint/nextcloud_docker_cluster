@@ -7,8 +7,6 @@ services:
 
   nc-web01:
     image: nginx
-    ports:
-      - 9080:80
     links:
       - app
     volumes:

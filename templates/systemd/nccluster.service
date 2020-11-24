@@ -1,0 +1,16 @@
+[Unit]
+Description=Netzint Nextcloud Cluster
+After=network.service
+
+[Service]
+User=ts3
+Group=ts3
+Type=forking
+WorkingDirectory=/srv/docker/nextcloud_docker_cluster/
+ExecStart=/srv/docker/nextcloud_docker_cluster/daemonHandler.sh start
+ExecStop=/srv/docker/nextcloud_docker_cluster/daemonHandler.sh stop
+RestartSec=20
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

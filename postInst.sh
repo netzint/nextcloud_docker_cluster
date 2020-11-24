@@ -15,7 +15,6 @@ docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/o
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set trusted_domains 1 --value=$INTERNAL_IP
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set trusted_domains 2 --value=$INTERNAL_DOMAINNAME
 
-
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ db:add-missing-primary-keys
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ background:cron
 
