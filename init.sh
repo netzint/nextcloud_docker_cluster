@@ -69,9 +69,9 @@ echo "set safe_to_bootstrap for db01"
 sed -i 's/safe_to_bootstrap: 0/safe_to_bootstrap: 1/' ./db01-data/grastate.dat
 
 echo "copy default config"
-cp -R templates/config nextcloud/
-chown -R www-data nextcloud/config
-touch nextcloud/config/CAN_INSTALL
+cp -R templates/config nextcloud-persistant/
+chown -R www-data nextcloud-persistant/config
+touch nextcloud-persistant/config/CAN_INSTALL
 
 echo "You should now run"
 echo "cp templates/systemd/nccluster.service /etc/systemd/systemd/"

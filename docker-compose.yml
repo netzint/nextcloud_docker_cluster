@@ -90,9 +90,9 @@ services:
   app:
     image: ni-nextcloud-fpm
     volumes:
-      - ./nextcloud/data:/var/www/html/data
-      - ./nextcloud/custom_apps:/var/www/html/custom_apps
-      - ./nextcloud/config:/var/www/html/config
+      - ./nextcloud-persistant/data:/var/www/html/data
+      - ./nextcloud-persistant/custom_apps:/var/www/html/custom_apps
+      - ./nextcloud-persistant/config:/var/www/html/config
     restart: always
     env_file:
       - db.env
