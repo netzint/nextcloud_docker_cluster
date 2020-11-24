@@ -6,7 +6,7 @@
         "authentication_type": "password::logincredentials",
         "configuration": {
             "host": "10.0.0.1",
-            "share": "mbg",
+            "share": "default-school",
             "root": "$home",
             "domain": "schule",
             "show_hidden": false,
@@ -31,7 +31,7 @@
         "authentication_type": "password::logincredentials",
         "configuration": {
             "host": "10.0.0.1",
-            "share": "mbg",
+            "share": "default-school",
             "root": "share",
             "domain": "schule",
             "show_hidden": false,
