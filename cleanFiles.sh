@@ -1,9 +1,9 @@
 #!/bin/bash
 rm -Rf -v ./db01-data/*
 rm -Rf -v ./db02-data/*
-rm -Rf -v ./nextcloud/data/*
-rm -Rf -v ./nextcloud/config/*
-rm -Rf -v ./nextcloud/custom_apps/*
+rm -Rf -v ./nextcloud-persistant/data/*
+rm -Rf -v ./nextcloud-persistant/config/*
+rm -Rf -v ./nextcloud-persistant/custom_apps/*
 
 
 docker rm nextcloud_docker_cluster_nc-proxy01_1
