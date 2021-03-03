@@ -4,6 +4,12 @@ case "$1" in
   start)
 	docker-compose up -d 
         ;;
+  update)
+	docker-compose pull
+	docker pull nextcloud:fpm
+	docker-compose up -d  --build
+	echo "Updated... Now run postUpdate.sh"
+        ;;
   stop)
 	echo "stop db2"
 	docker stop nextcloud_docker_cluster_nc-db02_1
