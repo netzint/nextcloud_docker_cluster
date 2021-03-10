@@ -155,7 +155,7 @@ services:
   
 
   nc-db01:
-    image: mariadb
+    image: mariadb:10.5.8
     command: >
           --transaction-isolation=READ-COMMITTED 
           --binlog-format=ROW 
@@ -184,7 +184,7 @@ services:
         ipv4_address: 172.24.0.100
   
   nc-db02:
-    image: mariadb
+    image: mariadb:10.5.8
     command: >
           --transaction-isolation=READ-COMMITTED 
           --binlog-format=ROW 
