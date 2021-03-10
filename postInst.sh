@@ -29,4 +29,7 @@ docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/o
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ app:enable user_ldap
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ app:enable files_external
 
+docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set skeletondirectory --value ""
+
+
 
