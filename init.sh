@@ -4,7 +4,7 @@ source db.env
 
 docker network create --gateway 172.24.0.1 --subnet 172.24.0.0/24 nextcloud
 
-docker run --rm --network nextcloud --ip 172.24.0.100 --name nextcloud_docker_cluster_nc-db01_1 -d -it -p 3306:3306 -v /srv/docker/nextcloud_docker_cluster/db01-data:/var/lib/mysql --env-file db.env mariadb \
+docker run --rm --network nextcloud --ip 172.24.0.100 --name nextcloud_docker_cluster_nc-db01_1 -d -it -p 3306:3306 -v /srv/docker/nextcloud_docker_cluster/db01-data:/var/lib/mysql --env-file db.env mariadb:10.5.8 \
           --transaction-isolation=READ-COMMITTED \
           --binlog-format=ROW \
           --innodb-large-prefix=true \
@@ -43,7 +43,7 @@ else
 fi
 
 echo "start second sql instance"
-docker run --rm --network nextcloud --ip 172.24.0.101 --name nextcloud_docker_cluster_nc-db02_1 -it -v /srv/docker/nextcloud_docker_cluster/db02-data:/var/lib/mysql --env-file db.env mariadb \
+docker run --rm --network nextcloud --ip 172.24.0.101 --name nextcloud_docker_cluster_nc-db02_1 -it -v /srv/docker/nextcloud_docker_cluster/db02-data:/var/lib/mysql --env-file db.env mariadb:10.5.8 \
           --transaction-isolation=READ-COMMITTED \
           --binlog-format=ROW \
           --innodb-large-prefix=true \
