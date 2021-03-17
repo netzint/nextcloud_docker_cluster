@@ -31,5 +31,7 @@ docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/o
 
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set skeletondirectory --value ""
 
+docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set share_folder --value='_geteilteDateien'
+
 
 
