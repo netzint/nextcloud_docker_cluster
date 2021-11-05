@@ -56,6 +56,7 @@ DROP TABLE IF EXISTS `oc_ratelimit_entries`;
 CREATE TABLE `oc_ratelimit_entries` (
   `hash` varchar(128) COLLATE utf8mb4_bin NOT NULL,
   `delete_after` datetime NOT NULL,
+  PRIMARY KEY (`hash`),
   KEY `ratelimit_hash` (`hash`),
   KEY `ratelimit_delete_after` (`delete_after`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPRESSED;
