@@ -147,6 +147,7 @@ services:
 
   nc-sqlbroker:
     image: haproxy:2.3
+    restart: always
     volumes:
       - './nc-sqlbroker/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
     networks:
