@@ -25,7 +25,7 @@ services:
     links:
       - app
     volumes:
-      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+      - ./web/web02/nextcloud:/etc/nginx/conf.d/default.conf:ro
     volumes_from:
       - app
     restart: always
@@ -41,7 +41,7 @@ services:
     links:
       - app
     volumes:
-      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+      - ./web/web03/nextcloud:/etc/nginx/conf.d/default.conf:ro
     volumes_from:
       - app
     restart: always
@@ -57,7 +57,7 @@ services:
     links:
       - app
     volumes:
-      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+      - ./web/web04/nextcloud:/etc/nginx/conf.d/default.conf:ro
     volumes_from:
       - app
     restart: always
