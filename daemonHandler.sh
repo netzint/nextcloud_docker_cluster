@@ -8,7 +8,6 @@ case "$1" in
 	docker-compose pull
 	docker pull nextcloud:fpm
 	docker-compose up -d  --build
-	echo "Updated... Now run postUpdate.sh"
         ;;
   stop)
 	echo "stop db2"

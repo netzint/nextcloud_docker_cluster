@@ -5,6 +5,8 @@ echo "proceed? [y]"
 read answer
 
 if [ $answer == "y" ];then 
+	echo "this kills everything!!! abort by ctrl + c... waiting 5 seconds"
+	sleep 5
 
 	rm -Rf -v ./db01-data
 	rm -Rf -v ./db02-data
