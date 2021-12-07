@@ -25,7 +25,7 @@ services:
     links:
       - app
     volumes:
-      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+      - ./web/web02/nextcloud:/etc/nginx/conf.d/default.conf:ro
     volumes_from:
       - app
     restart: always
@@ -41,7 +41,7 @@ services:
     links:
       - app
     volumes:
-      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+      - ./web/web03/nextcloud:/etc/nginx/conf.d/default.conf:ro
     volumes_from:
       - app
     restart: always
@@ -57,7 +57,7 @@ services:
     links:
       - app
     volumes:
-      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+      - ./web/web04/nextcloud:/etc/nginx/conf.d/default.conf:ro
     volumes_from:
       - app
     restart: always
@@ -147,8 +147,11 @@ services:
 
   nc-sqlbroker:
     image: haproxy:2.3
+    restart: always
     volumes:
       - './nc-sqlbroker/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
+    ports:
+      - 3306:3306
     networks:
       nextcloud:
         ipv4_address: 172.24.0.7
@@ -174,6 +177,7 @@ services:
           --wsrep-node-address="172.24.0.100"
           --innodb-flush-log-at-trx-commit=0 
           --wsrep-new-cluster
+          --max_allowed_packet=16M
     restart: always
     env_file:
       - db.env
@@ -202,6 +206,7 @@ services:
           --wsrep-node-name=nc-db02 
           --wsrep-node-address="172.24.0.101"
           --innodb-flush-log-at-trx-commit=0 
+          --max_allowed_packet=16M
     restart: always
     env_file:
       - db.env
