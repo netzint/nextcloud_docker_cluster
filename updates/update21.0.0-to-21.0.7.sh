@@ -13,13 +13,14 @@ if [ $? -gt 0 ];then
 fi
 
 
-docker ps  | grep nextcloud_docker_cluster
+docker ps  | grep nextcloud_docker_cluster > /dev/null
 if [ $? -gt 0 ];then
         echo "Failed to get version, see of nextcloud_docker_cluster is running"
         exit 1
 fi
 
 version=$(docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ status --output json | jq '.versionstring')
+version=$(echo $version | sed 's/"//g')
 
 
 if [ $fromVersion != $version ]; then
@@ -34,13 +35,13 @@ echo "This script updates $fromVersion to $toVersion"
 echo "Press Ctrl C to abort, starting in 5 seconds"
 sleep 5
 
-../daemonHandler stop
+../daemonHandler.sh stop
 
 # -> umschreiben dockerversion Dockerfile
 sed -i "s/From.*/From nextcloud:$toVersion-fpm/g" ../nextcloud-fpm/Dockerfile
 exit
 
-../daemonHandler update
+../daemonHandler.sh update
 
 # add primaray key to database
 mysql -h 127.0.0.1 -u nextcloud_db_user -p$MYSQL_PASSWORD -e 'CREATE TABLE oc_ratelimit_entries (hash VARCHAR(128) NOT NULL, delete_after DATETIME NOT NULL, INDEX ratelimit_hash (hash), INDEX ratelimit_delete_after (delete_after), PRIMARY KEY(hash)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_bin` ENGINE = InnoDB ROW_FORMAT = compressed;'
