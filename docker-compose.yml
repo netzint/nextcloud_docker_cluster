@@ -150,6 +150,8 @@ services:
     restart: always
     volumes:
       - './nc-sqlbroker/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
+    ports:
+      - 3306:3306
     networks:
       nextcloud:
         ipv4_address: 172.24.0.7
