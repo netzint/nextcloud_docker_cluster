@@ -33,7 +33,7 @@ sleep 3
 mysql -h localhost -p$MYSQL_ROOT_PASSWORD --protocol=TCP -e "show databases" > /dev/null
 done
 
-echo "importing tables"
+#echo "importing tables"
 
 mysql -h localhost -p$MYSQL_ROOT_PASSWORD --protocol=TCP nextcloud < templates/nextcloud.db
 if [ $? == 0 ];then

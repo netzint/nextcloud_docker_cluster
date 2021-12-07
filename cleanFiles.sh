@@ -6,8 +6,8 @@ read answer
 
 if [ $answer == "y" ];then 
 
-	rm -Rf -v ./db01-data/*
-	rm -Rf -v ./db02-data/*
+	rm -Rf -v ./db01-data
+	rm -Rf -v ./db02-data
 	rm -Rf -v ./nextcloud-persistant/data/*
 	rm -Rf -v ./nextcloud-persistant/config/*
 	rm -Rf -v ./nextcloud-persistant/custom_apps/*

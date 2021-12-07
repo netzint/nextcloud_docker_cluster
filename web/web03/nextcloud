@@ -17,6 +17,7 @@ server {
  
     root /var/www/html/;
 
+    client_max_body_size 700M;
 
     # Specify how to handle directories -- specifying `/index.php$request_uri`
     # here as the fallback means that Nginx always exhibits the desired behaviour
