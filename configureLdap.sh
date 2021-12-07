@@ -15,7 +15,6 @@ docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/o
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ ldap:set-config s01 ldapGidNumber                  gidNumber
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ ldap:set-config s01 ldapGroupDisplayName           cn
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ ldap:set-config s01 ldapGroupFilter                $LDAPGROUPFILTER
->>>>>>> d2a28b4688a5c89b857131a8a9f7dc927a799955
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ ldap:set-config s01 ldapGroupFilterObjectclass     group
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ ldap:set-config s01 ldapGroupMemberAssocAttr       member
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ ldap:set-config s01 ldapHost                       $LDAPHOST
