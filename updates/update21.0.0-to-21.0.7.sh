@@ -4,7 +4,7 @@ source ../db.env
 fromVersion=21.0.0
 toVersion=21.0.7
 
-jq 2>1 > /dev/null
+which jq > /dev/null
 if [ $? -gt 0 ];then
         echo "you need jq to tun this script."
         echo "Install by entering"
@@ -13,12 +13,13 @@ if [ $? -gt 0 ];then
 fi
 
 
-version=$(docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ status --output json | jq '.versionstring')
-
+docker ps  | grep nextcloud_docker_cluster
 if [ $? -gt 0 ];then
         echo "Failed to get version, see of nextcloud_docker_cluster is running"
         exit 1
 fi
+
+version=$(docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ status --output json | jq '.versionstring')
 
 
 if [ $fromVersion != $version ]; then
