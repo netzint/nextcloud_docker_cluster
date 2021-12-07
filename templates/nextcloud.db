@@ -1,0 +1,57 @@
+-- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: nextcloud
+-- ------------------------------------------------------
+-- Server version	10.5.8-MariaDB-1:10.5.8+maria~focal
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `oc_accounts`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oc_circles_event` (
+  `token` varchar(63) COLLATE utf8mb4_bin DEFAULT NULL,
+  `event` longtext COLLATE utf8mb4_bin DEFAULT NULL,
+  `result` longtext COLLATE utf8mb4_bin DEFAULT NULL,
+  `instance` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `interface` int(11) NOT NULL DEFAULT 0,
+  `severity` int(11) DEFAULT NULL,
+  `retry` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
+  `creation` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`token`),
+  UNIQUE KEY `UNIQ_1C1814105F37A13B4230B1DE` (`token`,`instance`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPRESSED;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oc_circles_membership` (
+  `circle_id` varchar(31) COLLATE utf8mb4_bin NOT NULL,
+  `single_id` varchar(31) COLLATE utf8mb4_bin NOT NULL,
+  `level` int(10) unsigned NOT NULL,
+  `inheritance_first` varchar(31) COLLATE utf8mb4_bin NOT NULL,
+  `inheritance_last` varchar(31) COLLATE utf8mb4_bin NOT NULL,
+  `inheritance_depth` int(10) unsigned NOT NULL,
+  `inheritance_path` longtext COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`single_id`,`circle_id`),
+  UNIQUE KEY `UNIQ_8FC816EAE7C1D92B70EE2FF6` (`single_id`,`circle_id`),
+  KEY `IDX_8FC816EAE7C1D92B` (`single_id`),
+  KEY `circles_membership_ifilci` (`inheritance_first`,`inheritance_last`,`circle_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPRESSED;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- Dump completed on 2020-11-19 15:50:31

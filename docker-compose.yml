@@ -1,0 +1,226 @@
+version: "3.8"
+services:
+
+  ni-nextcloud-fpm:
+    build: ./nextcloud-fpm
+    image: ni-nextcloud-fpm
+
+  nc-web01:
+    image: nginx
+    links:
+      - app
+    volumes:
+      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+      - app
+    restart: always
+    depends_on: 
+      - app
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.11
+
+  nc-web02:
+    image: nginx
+    links:
+      - app
+    volumes:
+      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+      - app
+    restart: always
+    depends_on: 
+      - app
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.12
+
+
+  nc-web03:
+    image: nginx
+    links:
+      - app
+    volumes:
+      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+      - app
+    restart: always
+    depends_on: 
+      - app
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.13
+
+
+  nc-web04:
+    image: nginx
+    links:
+      - app
+    volumes:
+      - ./web/web01/nextcloud:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+      - app
+    restart: always
+    depends_on: 
+      - app
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.14
+    
+  nc-proxy01:
+    image: haproxy:2.3
+    ports:
+      - 8080:80
+      - 443:443
+    volumes:
+      - './nc-proxy/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
+      - './nc-proxy/webserver:/etc/ssl/webserver'
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.4
+
+  redis01:
+    image: redis:alpine
+    command: redis-server --requirepass redis2020passwordImportant
+    restart: always
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.5
+
+  app:
+    image: ni-nextcloud-fpm
+    volumes:
+      - ./nextcloud-persistant/data:/var/www/html/data
+      - ./nextcloud-persistant/custom_apps:/var/www/html/custom_apps
+      - ./nextcloud-persistant/config:/var/www/html/config
+    restart: always
+    env_file:
+      - db.env
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.30
+
+  fpm01:
+    image: ni-nextcloud-fpm
+    restart: always
+    volumes_from:
+      - app
+    env_file:
+      - db.env
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.31
+  fpm02:
+    image: ni-nextcloud-fpm
+    restart: always
+    volumes_from:
+      - app
+    env_file:
+      - db.env
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.32
+
+  fpm03:
+    image: ni-nextcloud-fpm
+    restart: always
+    volumes_from:
+      - app
+    env_file:
+      - db.env
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.33
+
+  fpm04:
+    image: ni-nextcloud-fpm
+    restart: always
+    volumes_from:
+      - app
+    env_file:
+      - db.env
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.34
+
+
+
+  nc-sqlbroker:
+    image: haproxy:2.3
+    volumes:
+      - './nc-sqlbroker/haproxy:/usr/local/etc/haproxy/haproxy.cfg'
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.7
+  
+
+  nc-db01:
+    image: mariadb:10.5.8
+    command: >
+          --transaction-isolation=READ-COMMITTED 
+          --binlog-format=ROW 
+          --innodb-large-prefix=true 
+          --innodb-file-per-table=1 
+          --wsrep-on=ON 
+          --wsrep-provider=/usr/lib/galera/libgalera_smm.so 
+          --wsrep-cluster-address="gcomm://172.24.0.100,172.24.0.101" 
+          --default-storage-engine=InnoDB 
+          --binlog-format=row 
+          --innodb-autoinc-lock-mode=2 
+          --innodb-force-primary-key=1 
+          --innodb-doublewrite=1 
+          --wsrep-cluster-name=NextcloudCluster 
+          --wsrep-node-name=nc-db01 
+          --wsrep-node-address="172.24.0.100"
+          --innodb-flush-log-at-trx-commit=0 
+          --wsrep-new-cluster
+    restart: always
+    env_file:
+      - db.env
+    volumes:
+        - './db01-data:/var/lib/mysql'
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.100
+  
+  nc-db02:
+    image: mariadb:10.5.8
+    command: >
+          --transaction-isolation=READ-COMMITTED 
+          --binlog-format=ROW 
+          --innodb-large-prefix=true 
+          --innodb-file-per-table=1 
+          --wsrep-on=ON 
+          --wsrep-provider=/usr/lib/galera/libgalera_smm.so 
+          --wsrep-cluster-address="gcomm://172.24.0.100,172.24.0.101" 
+          --default-storage-engine=InnoDB 
+          --binlog-format=row 
+          --innodb-autoinc-lock-mode=2 
+          --innodb-force-primary-key=1 
+          --innodb-doublewrite=1 
+          --wsrep-cluster-name=NextcloudCluster 
+          --wsrep-node-name=nc-db02 
+          --wsrep-node-address="172.24.0.101"
+          --innodb-flush-log-at-trx-commit=0 
+    restart: always
+    env_file:
+      - db.env
+    volumes:
+      - './db02-data:/var/lib/mysql'
+    networks:
+      nextcloud:
+        ipv4_address: 172.24.0.101
+
+networks:
+  nextcloud:
+    external: true
+    name: nextcloud
+    driver: overlay
+
+volumes:
+  nextcloud:
+  nc-sqlbroker:
+      
+      
+
+

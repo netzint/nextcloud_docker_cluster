@@ -1,0 +1,6 @@
+db01-data
+db02-data
+nextcloud-persistant
+db.env
+ldap.env
+*.swp
