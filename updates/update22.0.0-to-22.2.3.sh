@@ -15,9 +15,9 @@ version=$(echo $version | sed 's/"//g' | sed  's/\r$//g')
 
 echo "This script updates $fromVersion to $toVersion"
 if [ "$version" != "$fromVersion" ]; then
-	echo "ERROR: Wrong script started!"
-	echo "Your are running $version"
-	echo "This script updates $fromVersion to $toVersion"
+        echo "ERROR: Wrong script started!"
+        echo "Your are running $version"
+        echo "This script updates $fromVersion to $toVersion"
         exit 1
 fi
 
