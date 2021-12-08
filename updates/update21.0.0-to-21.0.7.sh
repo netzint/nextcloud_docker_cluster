@@ -33,15 +33,15 @@ echo "Creating override file"
 echo "version: '3.8'
 services:
   app:
-    image: netzint/ni-nextcloud-fpm:$toVersion
+    image: netzint/nextcloud-fpm:$toVersion
   fpm01:
-    image: netzint/ni-nextcloud-fpm:$toVersion
+    image: netzint/nextcloud-fpm:$toVersion
   fpm02:
-    image: netzint/ni-nextcloud-fpm:$toVersion
+    image: netzint/nextcloud-fpm:$toVersion
   fpm03:
-    image: netzint/ni-nextcloud-fpm:$toVersion
+    image: netzint/nextcloud-fpm:$toVersion
   fpm04:
-    image: netzint/ni-nextcloud-fpm:$toVersion
+    image: netzint/nextcloud-fpm:$toVersion
 " > ../docker-compose.override.yml
 
 echo "updating container"
