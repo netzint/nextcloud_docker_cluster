@@ -4,3 +4,4 @@ nextcloud-persistant
 db.env
 ldap.env
 *.swp
+docker-compose.override.yml
