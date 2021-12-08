@@ -14,10 +14,17 @@ Static Content
 
 ni-nextcloud-fpm is build by us and contains the neccessary addons we need for ldap and samba access.
 
+
+Update existing installations
+=============================
+
+To update your existing installation, do the following steps:
+- pull the new changes from github
+- run updatescript
+- if error occours this would be a problem....
+
 Environment Variables
 =====================
-
-
 
 Environment Variables can be set in db.env. These contain the neccessary Data for database connections
 
