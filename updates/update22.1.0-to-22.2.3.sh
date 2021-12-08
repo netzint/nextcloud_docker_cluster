@@ -29,11 +29,23 @@ sleep 5
 ../daemonHandler.sh stop
 
 # -> umschreiben dockerversion Dockerfile
-echo "Editing dockerfile..."
-sed -i "s/From.*/From nextcloud:$toVersion-fpm/g" ../nextcloud-fpm/Dockerfile
+echo "Creating override file"
+echo "version: '3.8'
+services:
+  app:
+    image: netzint/ni-nextcloud-fpm:$toVersion
+  fpm01:
+    image: netzint/ni-nextcloud-fpm:$toVersion
+  fpm02:
+    image: netzint/ni-nextcloud-fpm:$toVersion
+  fpm03:
+    image: netzint/ni-nextcloud-fpm:$toVersion
+  fpm04:
+    image: netzint/ni-nextcloud-fpm:$toVersion
+" > ../docker-compose.override.yml
 
 echo "updating container"
-../daemonHandler.sh update
+docker-compose -f ../docker-compose.yml pull
 
 # add primaray key to database
 mysql -h 127.0.0.1 -u nextcloud_db_user -p$MYSQL_PASSWORD nextcloud -e 'CREATE TABLE oc_ratelimit_entries (hash VARCHAR(128) NOT NULL, delete_after DATETIME NOT NULL, INDEX ratelimit_hash (hash), INDEX ratelimit_delete_after (delete_after), PRIMARY KEY (hash)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_bin` ENGINE = InnoDB ROW_FORMAT = compressed'

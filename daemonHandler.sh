@@ -4,11 +4,6 @@ case "$1" in
   start)
 	docker-compose up -d 
         ;;
-  update)
-	docker-compose pull
-	docker pull nextcloud:fpm
-	docker-compose up -d  --build
-        ;;
   stop)
 	echo "stop db2"
 	docker stop nextcloud_docker_cluster_nc-db02_1
@@ -16,7 +11,14 @@ case "$1" in
 	sleep 20
 	docker-compose down
 	;;
-
+  restart)
+  	echo "stop db2"
+	docker stop nextcloud_docker_cluster_nc-db02_1
+	echo "wait for cluster to sync"
+	sleep 20
+	docker-compose down
+	docker-compose up -d 
+        ;;
   *)
 	echo "$1 not supported"
 	echo "use start or stop"
