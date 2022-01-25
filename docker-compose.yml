@@ -1,10 +1,6 @@
 version: "3.8"
 services:
 
-  ni-nextcloud-fpm:
-    build: ./nextcloud-fpm
-    image: ni-nextcloud-fpm
-
   nc-web01:
     image: nginx
     links:
@@ -88,7 +84,7 @@ services:
         ipv4_address: 172.24.0.5
 
   app:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     volumes:
       - ./nextcloud-persistant/data:/var/www/html/data
       - ./nextcloud-persistant/custom_apps:/var/www/html/custom_apps
@@ -101,7 +97,7 @@ services:
         ipv4_address: 172.24.0.30
 
   fpm01:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -111,7 +107,7 @@ services:
       nextcloud:
         ipv4_address: 172.24.0.31
   fpm02:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -122,7 +118,7 @@ services:
         ipv4_address: 172.24.0.32
 
   fpm03:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -133,7 +129,7 @@ services:
         ipv4_address: 172.24.0.33
 
   fpm04:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
