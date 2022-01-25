@@ -2,20 +2,20 @@ version: "3.8"
 services:
 
   app:
-    image: ni-nextcloud-fpm:version
+    image: ni-nextcloud-fpm
 
   fpm01:
-    image: ni-nextcloud-fpm:version
+    image: ni-nextcloud-fpm
 
   fpm02:
-    image: ni-nextcloud-fpm:version
+    image: ni-nextcloud-fpm
 
 
   fpm03:
-    image: ni-nextcloud-fpm:version
+    image: ni-nextcloud-fpm
 
   fpm04:
-    image: ni-nextcloud-fpm:version
+    image: ni-nextcloud-fpm
 
 
 
