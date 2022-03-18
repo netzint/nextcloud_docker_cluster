@@ -2,19 +2,19 @@ version: "3.8"
 services:
 
   app:
-    image: netzint/nextcloud-fpm
+    image: netzint/nextcloud-fpm:23.0.2
 
   fpm01:
-    image: netzint/nextcloud-fpm
+    image: netzint/nextcloud-fpm:23.0.2
 
   fpm02:
-    image: netzint/nextcloud-fpm
+    image: netzint/nextcloud-fpm:23.0.2
 
   fpm03:
-    image: netzint/nextcloud-fpm
+    image: netzint/nextcloud-fpm:23.0.2
 
   fpm04:
-    image: netzint/nextcloud-fpm
+    image: netzint/nextcloud-fpm:23.0.2
 
 
 

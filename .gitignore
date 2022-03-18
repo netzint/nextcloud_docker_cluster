@@ -5,3 +5,4 @@ db.env
 ldap.env
 *.swp
 docker-compose.override.yml
+*.log

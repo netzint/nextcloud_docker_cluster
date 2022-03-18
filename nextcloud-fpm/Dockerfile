@@ -1,4 +1,4 @@
-FROM nextcloud:22.2.3-fpm
+FROM nextcloud:23.0.2-fpm
 
 RUN apt-get update && apt-get install -y \
     supervisor \
@@ -16,9 +16,11 @@ RUN docker-php-ext-enable smbclient
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install gmp
 
-COPY supervisord.conf /
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 ENV NEXTCLOUD_UPDATE=1
 
-CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
