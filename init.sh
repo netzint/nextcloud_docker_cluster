@@ -69,6 +69,7 @@ echo "set safe_to_bootstrap for db01"
 sed -i 's/safe_to_bootstrap: 0/safe_to_bootstrap: 1/' ./db01-data/grastate.dat
 
 echo "copy default config"
+mkdir nextcloud-persistant
 cp -R templates/config nextcloud-persistant/
 chown -R www-data nextcloud-persistant/config
 touch nextcloud-persistant/config/CAN_INSTALL
