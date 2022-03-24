@@ -35,5 +35,8 @@ docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/o
 
 docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set share_folder --value='_geteilteDateien'
 
+# Fix for Onlyoffice under NC23
+docker exec --user www-data -it nextcloud_docker_cluster_fpm01_1 /var/www/html/occ config:system:set allow_local_remote_servers --value true
+
 
 
