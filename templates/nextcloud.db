@@ -17,24 +17,6 @@
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `oc_circles_event` (
-  `token` varchar(63) COLLATE utf8mb4_bin DEFAULT NULL,
-  `event` longtext COLLATE utf8mb4_bin DEFAULT NULL,
-  `result` longtext COLLATE utf8mb4_bin DEFAULT NULL,
-  `instance` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `interface` int(11) NOT NULL DEFAULT 0,
-  `severity` int(11) DEFAULT NULL,
-  `retry` int(11) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `updated` datetime DEFAULT NULL,
-  `creation` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`token`),
-  UNIQUE KEY `UNIQ_1C1814105F37A13B4230B1DE` (`token`,`instance`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPRESSED;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `oc_circles_membership` (
   `circle_id` varchar(31) COLLATE utf8mb4_bin NOT NULL,
   `single_id` varchar(31) COLLATE utf8mb4_bin NOT NULL,

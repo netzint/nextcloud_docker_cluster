@@ -41,6 +41,7 @@ Environment Variables can be set in db.env. These contain the neccessary Data fo
 - `NEXTCLOUD_ADMIN_PASSWORD=Muster!`
 - `INTERNAL_IP=10.10.1.134`
 - `INTERNAL_DOMAINNAME=nextcloud.netzint.de`
+- `NEXTCLOUD_ENABLE_CRON=0`
 
 How it works
 ============
