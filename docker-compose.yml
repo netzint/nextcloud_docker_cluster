@@ -190,7 +190,7 @@ services:
           --max_heap_table_size=64M
           --slow_query_log=1
           --long_query_time=1
-          --wait_timeout=10
+          --wait_timeout=30
     restart: always
     env_file:
       - db.env
@@ -231,7 +231,7 @@ services:
           --max_heap_table_size=64M
           --slow_query_log=1
           --long_query_time=1
-          --wait_timeout=10
+          --wait_timeout=30
           --wsrep-node-name=nc-db02 
           --wsrep-node-address="172.24.0.101"
     restart: always
