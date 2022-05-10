@@ -1,10 +1,6 @@
 version: "3.8"
 services:
 
-  ni-nextcloud-fpm:
-    build: ./nextcloud-fpm
-    image: ni-nextcloud-fpm
-
   nc-web01:
     image: nginx
     links:
@@ -88,7 +84,7 @@ services:
         ipv4_address: 172.24.0.5
 
   app:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     volumes:
       - ./nextcloud-persistant/data:/var/www/html/data
       - ./nextcloud-persistant/custom_apps:/var/www/html/custom_apps
@@ -101,7 +97,7 @@ services:
         ipv4_address: 172.24.0.30
 
   fpm01:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -111,7 +107,7 @@ services:
       nextcloud:
         ipv4_address: 172.24.0.31
   fpm02:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -122,7 +118,7 @@ services:
         ipv4_address: 172.24.0.32
 
   fpm03:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -133,7 +129,7 @@ services:
         ipv4_address: 172.24.0.33
 
   fpm04:
-    image: ni-nextcloud-fpm
+    image: netzint/nextcloud-fpm
     restart: always
     volumes_from:
       - app
@@ -162,22 +158,36 @@ services:
     command: >
           --transaction-isolation=READ-COMMITTED 
           --binlog-format=ROW 
-          --innodb-large-prefix=true 
-          --innodb-file-per-table=1 
+          --innodb-large-prefix=on
+          --innodb-file-per-table=1
+          --innodb_file_format=barracuda 
           --wsrep-on=ON 
           --wsrep-provider=/usr/lib/galera/libgalera_smm.so 
           --wsrep-cluster-address="gcomm://172.24.0.100,172.24.0.101" 
           --default-storage-engine=InnoDB 
-          --binlog-format=row 
-          --innodb-autoinc-lock-mode=2 
+          --innodb-autoinc-lock-mode=2
           --innodb-force-primary-key=1 
           --innodb-doublewrite=1 
           --wsrep-cluster-name=NextcloudCluster 
           --wsrep-node-name=nc-db01 
           --wsrep-node-address="172.24.0.100"
-          --innodb-flush-log-at-trx-commit=0 
+          --innodb-flush-log-at-trx-commit=2
           --wsrep-new-cluster
-          --max_allowed_packet=16M
+          --max_allowed_packet=128M
+          --skip_name_resolve=1
+          --innodb_buffer_pool_size=128M
+          --innodb_buffer_pool_instances=1
+          --innodb_log_buffer_size=32M
+          --innodb_max_dirty_pages_pct=90
+          --query_cache_type=1
+          --query_cache_limit=2M
+          --query_cache_min_res_unit=2k
+          --query_cache_size=64M
+          --tmp_table_size=64M
+          --max_heap_table_size=64M
+          --slow_query_log=1
+          --long_query_time=1
+          --wait_timeout=10
     restart: always
     env_file:
       - db.env
@@ -190,23 +200,37 @@ services:
   nc-db02:
     image: mariadb:10.5.8
     command: >
-          --transaction-isolation=READ-COMMITTED 
-          --binlog-format=ROW 
-          --innodb-large-prefix=true 
-          --innodb-file-per-table=1 
-          --wsrep-on=ON 
-          --wsrep-provider=/usr/lib/galera/libgalera_smm.so 
-          --wsrep-cluster-address="gcomm://172.24.0.100,172.24.0.101" 
-          --default-storage-engine=InnoDB 
-          --binlog-format=row 
-          --innodb-autoinc-lock-mode=2 
-          --innodb-force-primary-key=1 
-          --innodb-doublewrite=1 
-          --wsrep-cluster-name=NextcloudCluster 
+          --transaction-isolation=READ-COMMITTED
+          --binlog-format=ROW
+          --innodb-large-prefix=on
+          --innodb-file-per-table=1
+          --innodb_file_format=barracuda
+          --wsrep-on=ON
+          --wsrep-provider=/usr/lib/galera/libgalera_smm.so
+          --wsrep-cluster-address="gcomm://172.24.0.100,172.24.0.101"
+          --default-storage-engine=InnoDB
+          --innodb-autoinc-lock-mode=2
+          --innodb-force-primary-key=1
+          --innodb-doublewrite=1
+          --wsrep-cluster-name=NextcloudCluster
+          --innodb-flush-log-at-trx-commit=2
+          --max_allowed_packet=128M
+          --skip_name_resolve=1
+          --innodb_buffer_pool_size=128M
+          --innodb_buffer_pool_instances=1
+          --innodb_log_buffer_size=32M
+          --innodb_max_dirty_pages_pct=90
+          --query_cache_type=1
+          --query_cache_limit=2M
+          --query_cache_min_res_unit=2k
+          --query_cache_size=64M
+          --tmp_table_size=64M
+          --max_heap_table_size=64M
+          --slow_query_log=1
+          --long_query_time=1
+          --wait_timeout=10
           --wsrep-node-name=nc-db02 
           --wsrep-node-address="172.24.0.101"
-          --innodb-flush-log-at-trx-commit=0 
-          --max_allowed_packet=16M
     restart: always
     env_file:
       - db.env
