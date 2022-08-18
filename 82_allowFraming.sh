@@ -7,6 +7,10 @@ sed -i "/add_header X-Frame-Options \"SAMEORIGIN\";/i \    add_header X-Frame-Op
 docker exec nextcloud_docker_cluster_fpm01_1 sed -i "/allowedFrameAncestors = \[/a \                '$SERVER_URL'," /var/www/html/lib/public/AppFramework/Http/ContentSecurityPolicy.php
 docker exec nextcloud_docker_cluster_fpm01_1 sed -i "s/\[\]/['$SERVER_URL']/g" /var/www/html/lib/public/AppFramework/Http/ContentSecurityPolicy.php
 
-sed -i "/docker-compose up -d/a \        sleep 20\n        ./allowFraming.sh" daemonHandler.sh
-
+if [[ -z $(cat daemonHandler.sh | grep "allowFraming.sh") ]]; then
+  echo "allowFraming.sh not in daemonHandler.sh. Adding it..."
+  sed -i "/docker-compose up -d/a \        sleep 20\n        ./allowFraming.sh" daemonHandler.sh
+else
+  echo "allowFraming.sh already in daemonHandler.sh!"
+fi
 
