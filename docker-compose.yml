@@ -55,12 +55,12 @@ services:
     volumes_from:
       - app
     restart: always
-    depends_on: 
+    depends_on:
       - app
     networks:
       nextcloud:
         ipv4_address: 172.24.0.14
-    
+
   nc-proxy01:
     image: haproxy:2.3
     ports:
@@ -86,6 +86,7 @@ services:
       - ./nextcloud-persistant/data:/var/www/html/data
       - ./nextcloud-persistant/custom_apps:/var/www/html/custom_apps
       - ./nextcloud-persistant/config:/var/www/html/config
+      - ./nc-proxy/webserver:/etc/ssl/webserver
     restart: always
     env_file:
       - db.env
