@@ -59,7 +59,8 @@ def main():
                 f.write(DOCKERFILE_TEMPLATE.replace("##TAG##", tag))
             try:
                 print("  [%s] Start building docker image..." % tag, end="")
-                client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
+                r = client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
+                print(r)
                 print("  ok!")
 
             except:
@@ -69,10 +70,13 @@ def main():
 
             try:
                 print("  [%s] Start publishing docker image..." % tag, end="")
-                client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
+                r = client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
+                print(r)
                 print("  ok!")
             except Exception as e:
                 raise SystemExit("Error upload image! " + str(e))
+            
+            exit()
 
 if __name__ == "__main__":
     main()
