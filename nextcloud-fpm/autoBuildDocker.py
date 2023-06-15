@@ -51,9 +51,6 @@ def main():
 
     client = docker.from_env()
     r = client.login(username=os.getenv("DOCKERHUB_USERNAME"), password=os.getenv("DOCKERHUB_PASSWORD"))
-    print(os.getenv("DOCKERHUB_USERNAME"))
-    print(os.getenv("DOCKERHUB_PASSWORD"))
-    print(r)
 
     for tag in nextcloudTags:
         if tag not in netzintTags:
@@ -62,8 +59,7 @@ def main():
                 f.write(DOCKERFILE_TEMPLATE.replace("##TAG##", tag))
             try:
                 print("  [%s] Start building docker image..." % tag, end="")
-                r = client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
-                print(r)
+                client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
                 print("  ok!")
 
             except:
@@ -73,13 +69,10 @@ def main():
 
             try:
                 print("  [%s] Start publishing docker image..." % tag, end="")
-                r = client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
-                print(r)
+                client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
                 print("  ok!")
             except Exception as e:
                 raise SystemExit("Error upload image! " + str(e))
-            
-            exit()
 
 if __name__ == "__main__":
     main()
