@@ -16,4 +16,7 @@ jobs:
         run: sudo apt update && sudo apt install python3-docker -y
 
       - name: Build Docker-Image
-        run: cd ./nextcloud-fpm && ./autoBuildDocker.py ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: cd ./nextcloud-fpm && ./autoBuildDocker.py

@@ -12,7 +12,6 @@ import re
 import docker
 import io
 import os
-import sys
 
 DOCKERFILE_TEMPLATE="""
 FROM nextcloud:##TAG##-fpm
@@ -51,8 +50,9 @@ def main():
     netzintTags = getTagsFromDockerhub("netzint", "nextcloud-fpm")
 
     client = docker.from_env()
-    print(sys.argv)
-    r = client.login(username=sys.argv[1], password=sys.argv[2])
+    r = client.login(username=os.getenv("DOCKERHUB_USERNAME"), password=os.getenv("DOCKERHUB_PASSWORD"))
+    print(os.getenv("DOCKERHUB_USERNAME"))
+    print(os.getenv("DOCKERHUB_PASSWORD"))
     print(r)
 
     for tag in nextcloudTags:
