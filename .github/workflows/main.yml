@@ -1,1 +1,16 @@
+name: "Build docker image for nextcloud"
+on:
+  schedule:
+  - cron: "0 5 * * *"
+  workflow_dispatch:
 
+jobs:
+  build-docker:
+    name: Build Docker-Image
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: cd ./nextcloud-fpm && ./autoBuildDocker.py

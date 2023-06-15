@@ -73,8 +73,6 @@ def main():
                 print("  ok!")
             except Exception as e:
                 raise SystemExit("Error upload image! " + str(e))
-            exit()
-            
 
 if __name__ == "__main__":
     main()
