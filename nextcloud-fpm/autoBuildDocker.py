@@ -50,7 +50,7 @@ def main():
     netzintTags = getTagsFromDockerhub("netzint", "nextcloud-fpm")
 
     client = docker.from_env()
-    client.login(username=args.DOCKERHUB_USERNAME, password=args.DOCKERHUB_PASSWORD)
+    client.login(username=os.getenv("DOCKERHUB_USERNAME"), password=os.getenv("DOCKERHUB_PASSWORD"))
 
     for tag in nextcloudTags:
         if tag not in netzintTags:
