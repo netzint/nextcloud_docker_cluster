@@ -12,6 +12,7 @@ import re
 import docker
 import io
 import os
+import sys
 
 DOCKERFILE_TEMPLATE="""
 FROM nextcloud:##TAG##-fpm
