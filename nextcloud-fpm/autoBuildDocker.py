@@ -88,11 +88,11 @@ def main():
                     print("  [%s] This is the newest version of nextcloud. Publish as latest too!" % tag, end="")
                     client.images.push(repository="netzint/nextcloud-fpm", tag="latest")
                     print("  ok!")
-                    with open("build-infos-header.txt", "w") as f:
+                    with open("../build-infos-header.txt", "w") as f:
                         f.write("Release v%s" % tag)
-                    with open("build-infos-tag.txt", "w") as f:
+                    with open("../build-infos-tag.txt", "w") as f:
                         f.write(tag)
-                    with open("build-infos-body.txt", "w") as f:
+                    with open("../build-infos-body.txt", "w") as f:
                         f.write("Version %s has just been built as a Docker container. This version is the most current on Nextcloud and has therefore been marked as 'latest'." % tag)
                 except Exception as e:
                     raise SystemExit("Error upload image! " + str(e))
