@@ -54,6 +54,27 @@ def getLatestNextcloudRelease():
     except:
         return None
 
+def buildImage(tag):
+    with open("dockerfile.tmp", "w") as f:
+        f.write(DOCKERFILE_TEMPLATE.replace("##TAG##", tag))
+
+    try:
+        print("  [%s] Start building docker image..." % tag, end="")
+        client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
+        print("  ok!")
+    except:
+        raise SystemExit("Error building image!")
+
+    os.remove("dockerfile.tmp")
+
+def publishImage(tag):
+    try:
+        print("  [%s] Start publishing docker image..." % tag, end="")
+        client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
+        print("  ok!")
+    except Exception as e:
+        raise SystemExit("Error upload image! " + str(e))
+
 def main():
     nextcloudTags = getTagsFromDockerhub("library", "nextcloud")
     netzintTags = getTagsFromDockerhub("netzint", "nextcloud-fpm")
@@ -66,40 +87,20 @@ def main():
     for tag in nextcloudTags:
         if tag not in netzintTags:
             print("New nextcloud tag found '%s' and is ready to build!" % tag)
-            with open("dockerfile.tmp", "w") as f:
-                f.write(DOCKERFILE_TEMPLATE.replace("##TAG##", tag))
-            try:
-                print("  [%s] Start building docker image..." % tag, end="")
-                client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
-                print("  ok!")
-
-            except:
-                raise SystemExit("Error building image!")
-
-            os.remove("dockerfile.tmp")
-
-            try:
-                print("  [%s] Start publishing docker image..." % tag, end="")
-                client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
-                print("  ok!")
-            except Exception as e:
-                raise SystemExit("Error upload image! " + str(e))
-
+            buildImage(tag)
+            publishImage(tag)
+            
             # check if this version is the latest release?
             if latestVersion is not None and tag in latestVersion:
-                try:
-                    print("  [%s] This is the newest version of nextcloud. Publish as latest too!" % tag, end="")
-                    r = client.images.push(repository="netzint/nextcloud-fpm", tag="latest")
-                    print(r)
-                    print("  ok!")
-                    with open("../build-infos-header.txt", "w") as f:
-                        f.write("Release v%s" % tag)
-                    with open("../build-infos-tag.txt", "w") as f:
-                        f.write(tag)
-                    with open("../build-infos-body.txt", "w") as f:
-                        f.write("Version %s has just been built as a Docker container. This version is the most current on Nextcloud and has therefore been marked as 'latest'." % tag)
-                except Exception as e:
-                    raise SystemExit("Error upload image! " + str(e))
+                buildImage("latest")
+                publishImage("latest")
+
+                with open("../build-infos-header.txt", "w") as f:
+                    f.write("Release v%s" % tag)
+                with open("../build-infos-tag.txt", "w") as f:
+                    f.write(tag)
+                with open("../build-infos-body.txt", "w") as f:
+                    f.write("Version %s has just been built as a Docker container. This version is the most current on Nextcloud and has therefore been marked as 'latest'." % tag)
 
     with open("../build-infos-info.txt", "w") as f:
         f.write("Run finished!")
