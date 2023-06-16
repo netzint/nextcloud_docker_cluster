@@ -89,7 +89,8 @@ def main():
             if latestVersion is not None and tag in latestVersion:
                 try:
                     print("  [%s] This is the newest version of nextcloud. Publish as latest too!" % tag, end="")
-                    client.images.push(repository="netzint/nextcloud-fpm", tag="latest")
+                    r = client.images.push(repository="netzint/nextcloud-fpm", tag="latest")
+                    print(r)
                     print("  ok!")
                     with open("../build-infos-header.txt", "w") as f:
                         f.write("Release v%s" % tag)
