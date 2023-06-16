@@ -98,8 +98,8 @@ def main():
             
             # check if this version is the latest release?
             if latestVersion is not None and tag in latestVersion:
-                buildImage("latest", client, tag)
-                publishImage("latest", client, tag)
+                buildImage(tag, client, "latest")
+                publishImage(tag, client, "latest")
 
                 with open("../build-infos-header.txt", "w") as f:
                     f.write("Release v%s" % tag)
