@@ -46,10 +46,13 @@ def getTagsFromDockerhub(namespace, repo):
     return tags
 
 def getLatestNextcloudRelease():
-    headers = { "Accept": "application/json" }
-    r = requests.get("https://api.github.com/repos/nextcloud/server/tags", headers=headers)
-    result = r.json()
-    return result[0]["name"].replace("v", "")
+    try: 
+        headers = { "Accept": "application/json" }
+        r = requests.get("https://api.github.com/repos/nextcloud/server/tags", headers=headers)
+        result = r.json()
+        return result[0]["name"].replace("v", "")
+    except:
+        return None
 
 def main():
     nextcloudTags = getTagsFromDockerhub("library", "nextcloud")
@@ -83,7 +86,7 @@ def main():
                 raise SystemExit("Error upload image! " + str(e))
 
             # check if this version is the latest release?
-            if tag in latestVersion:
+            if latestVersion is not None and tag in latestVersion:
                 try:
                     print("  [%s] This is the newest version of nextcloud. Publish as latest too!" % tag, end="")
                     client.images.push(repository="netzint/nextcloud-fpm", tag="latest")
