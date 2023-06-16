@@ -100,6 +100,9 @@ def main():
                 except Exception as e:
                     raise SystemExit("Error upload image! " + str(e))
 
+    with open("../build-infos-info.txt", "w") as f:
+        f.write("Run finished!")
+
 
 if __name__ == "__main__":
     main()
