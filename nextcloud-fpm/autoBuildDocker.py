@@ -54,23 +54,29 @@ def getLatestNextcloudRelease():
     except:
         return None
 
-def buildImage(tag, client):
+def buildImage(tag, client, name=None):
     with open("dockerfile.tmp", "w") as f:
         f.write(DOCKERFILE_TEMPLATE.replace("##TAG##", tag))
 
+    if not name:
+        name = tag
+
     try:
-        print("  [%s] Start building docker image..." % tag, end="")
-        client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + tag, path="./")
+        print("  [%s] Start building docker image..." % name, end="")
+        client.images.build(dockerfile="dockerfile.tmp", tag="netzint/nextcloud-fpm:" + name, path="./")
         print("  ok!")
     except Exception as e:
         raise SystemExit("Error building image! " + str(e))
 
     os.remove("dockerfile.tmp")
 
-def publishImage(tag, client):
+def publishImage(tag, client, name=None):
+    if not name:
+        name = tag
+
     try:
-        print("  [%s] Start publishing docker image..." % tag, end="")
-        client.images.push(repository="netzint/nextcloud-fpm", tag=tag)
+        print("  [%s] Start publishing docker image..." % name, end="")
+        client.images.push(repository="netzint/nextcloud-fpm", tag=name)
         print("  ok!")
     except Exception as e:
         raise SystemExit("Error upload image! " + str(e))
@@ -92,8 +98,8 @@ def main():
             
             # check if this version is the latest release?
             if latestVersion is not None and tag in latestVersion:
-                buildImage("latest", client)
-                publishImage("latest", client)
+                buildImage("latest", client, tag)
+                publishImage("latest", client, tag)
 
                 with open("../build-infos-header.txt", "w") as f:
                     f.write("Release v%s" % tag)
