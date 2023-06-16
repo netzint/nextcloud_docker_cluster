@@ -20,3 +20,56 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: cd ./nextcloud-fpm && ./autoBuildDocker.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-infos
+          path: build-infos-*.txt
+
+  github-release:
+    needs: build-docker
+    name: GitHub Release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-infos
+
+      - name: Check file existence
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "./build-infos-header.txt"
+
+      - name: "Determine header"
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: "echo \"RELEASE_HEADER=$(cat ./build-infos-header.txt)\" >> $GITHUB_ENV"
+
+      - name: "Determine tag"
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: "echo \"RELEASE_TAG=$(cat ./build-infos-tag.txt)\" >> $GITHUB_ENV"
+
+      - name: Create Release
+        if: steps.check_files.outputs.files_exists == 'true'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ process.env.RELEASE_TAG }}
+          release_name: ${{ process.env.RELEASE_HEADER }}
+          draft: false
+          prerelease: false
+          body_path: ./build-infos-body.txt
+
+      - name: Upload Release Assets
+        if: steps.check_files.outputs.files_exists == 'true'
+        id: upload-release-assets
+        uses: dwenegar/upload-release-assets@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.create_release.outputs.id }}
+          assets_path: .
