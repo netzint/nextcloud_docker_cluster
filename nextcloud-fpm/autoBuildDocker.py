@@ -50,7 +50,10 @@ def getLatestNextcloudRelease():
         headers = { "Accept": "application/json" }
         r = requests.get("https://api.github.com/repos/nextcloud/server/tags", headers=headers)
         result = r.json()
-        return result[0]["name"].replace("v", "")
+        for res in result:
+            if "rc" not in res["name"] and "beta" not in res["name"]:
+                return res["name"].replace("v", "")
+        return None
     except:
         return None
 

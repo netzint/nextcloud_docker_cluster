@@ -22,12 +22,7 @@ header = """
  | |\  |  __/>  <| || (__| | (_) | |_| | (_| | | |_| | |_) | (_| | (_| | ||  __/ |   
  |_| \_|\___/_/\_\\__\___|_|\___/ \__,_|\__,_|  \___/| .__/ \__,_|\__,_|\__\___|_|   
                                                      |_|                             
- __     __  _           ____   ___ ____  _____      __   ___ _____      __  ____  _  
- \ \   / / / |         |___ \ / _ \___ \|___ /     / /  / _ \___  |    / / |___ \/ | 
-  \ \ / /  | |  _____    __) | | | |__) | |_ \    / /  | | | | / /    / /    __) | | 
-   \ V /   | | |_____|  / __/| |_| / __/ ___) |  / /   | |_| |/ /    / /    / __/| | 
-    \_/    |_|         |_____|\___/_____|____/  /_/     \___//_/    /_/    |_____|_| 
-                                                                                     
+ Version 1.1 from 2023/12/05 by Netzint GmbH
 """                                                                                  
 
 def __execute(command):
@@ -64,13 +59,18 @@ def checkMaintenanceMode():
         return False
 
 def getLatestVersionFromCurrent(versions, current):
-    result = []
+    filter_res = []
     for version in versions:
-        if current.split(".")[0] + "." + current.split(".")[1] in version:
-            result.append(version)
-    if result[len(result) - 1] in current:
+        if version.split(".")[0] == current.split(".")[0]:
+                filter_res.append(version)
+
+    if len(filter_res) == 0:
+        return None
+    
+    last_version_of_current = filter_res[-1]
+    if last_version_of_current == current:
         return getLatestVersionFromCurrent(versions, str(int(current.split(".")[0]) + 1) + ".0.0")
-    return result[len(result) - 1]
+    return last_version_of_current
 
 def main():
     versions = getNextcloudReleases()
@@ -78,6 +78,11 @@ def main():
     result = getLatestVersionFromCurrent(versions, current)
     
     print(header)
+
+    if result == None:
+        print("🥳 You are already on the latest version! Congratulations 🥳🥳🥳")
+        exit(0)
+
     print("⛏️ This script update your nextcloud from version %s to version %s. Do you want to continue? (y/n)" % (current, result))
     while True:
         user = input("Type y or n: ")
